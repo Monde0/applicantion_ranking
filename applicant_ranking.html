@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ranking</title>
+    <style>
+        .loader {
+          border: 8px solid #f3f3f3; /* Light grey */
+          border-top: 8px solid #3498db; /* Blue */
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var rentersData = [
+            {
+                "name": "Marie Hunt",
+                "gender": "female",
+                "credit_score": 641,
+                "income": 11100,
+                "employment_history": 4,
+                "DTI": 0.1,
+                "RTI": 0.3,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Gina Harmon",
+                "gender": "male",
+                "credit_score": 680,
+                "income": 10800,
+                "employment_history": 0,
+                "DTI": 0.5,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Nicholas Foster",
+                "gender": "male",
+                "credit_score": 666,
+                "income": 8000,
+                "employment_history": 3,
+                "DTI": 0.5,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Adrian Thomas",
+                "gender": "female",
+                "credit_score": 627,
+                "income": 6500,
+                "employment_history": 1,
+                "DTI": 0.3,
+                "RTI": 0.5,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Lisa Burnett",
+                "gender": "male",
+                "credit_score": 731,
+                "income": 8600,
+                "employment_history": 0,
+                "DTI": 0.2,
+                "RTI": 0.3,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "James Gutierrez",
+                "gender": "female",
+                "credit_score": 611,
+                "income": 9900,
+                "employment_history": 2,
+                "DTI": 0.2,
+                "RTI": 0.35,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Stephen Montoya DDS",
+                "gender": "male",
+                "credit_score": 745,
+                "income": 11200,
+                "employment_history": 0,
+                "DTI": 0.3,
+                "RTI": 0.35,
+                "has_criminal_background": "True",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Diana Cummings",
+                "gender": "male",
+                "credit_score": 794,
+                "income": 9300,
+                "employment_history": 4,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Joseph Johns",
+                "gender": "male",
+                "credit_score": 841,
+                "income": 4000,
+                "employment_history": 3,
+                "DTI": 0.1,
+                "RTI": 0.1,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Christopher Hayden",
+                "gender": "male",
+                "credit_score": 666,
+                "income": 3300,
+                "employment_history": 0,
+                "DTI": 0.6,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Daniel Foley",
+                "gender": "male",
+                "credit_score": 826,
+                "income": 11700,
+                "employment_history": 4,
+                "DTI": 0.2,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Jason Duke",
+                "gender": "female",
+                "credit_score": 647,
+                "income": 11300,
+                "employment_history": 3,
+                "DTI": 0.1,
+                "RTI": 0.2,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Devin Everett",
+                "gender": "male",
+                "credit_score": 773,
+                "income": 3300,
+                "employment_history": 2,
+                "DTI": 0,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Christopher Lewis",
+                "gender": "female",
+                "credit_score": 743,
+                "income": 3800,
+                "employment_history": 4,
+                "DTI": 0.3,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Tina Kim",
+                "gender": "female",
+                "credit_score": 736,
+                "income": 14200,
+                "employment_history": 1,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Samantha White",
+                "gender": "female",
+                "credit_score": 821,
+                "income": 14500,
+                "employment_history": 0,
+                "DTI": 0.6,
+                "RTI": 0.1,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Dawn Pitts",
+                "gender": "male",
+                "credit_score": 734,
+                "income": 10600,
+                "employment_history": 3,
+                "DTI": 0,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Julia Green",
+                "gender": "female",
+                "credit_score": 694,
+                "income": 10700,
+                "employment_history": 4,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Rodney Johnson",
+                "gender": "male",
+                "credit_score": 622,
+                "income": 13300,
+                "employment_history": 3,
+                "DTI": 0,
+                "RTI": 0.35,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Kristen Wilson",
+                "gender": "female",
+                "credit_score": 686,
+                "income": 8700,
+                "employment_history": 0,
+                "DTI": 0.6,
+                "RTI": 0.35,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Daniel Jenkins",
+                "gender": "female",
+                "credit_score": 810,
+                "income": 3100,
+                "employment_history": 0,
+                "DTI": 0.5,
+                "RTI": 0.45,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Hunter Miller",
+                "gender": "male",
+                "credit_score": 782,
+                "income": 11000,
+                "employment_history": 1,
+                "DTI": 0.1,
+                "RTI": 0.2,
+                "has_criminal_background": "True",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Melinda Price",
+                "gender": "male",
+                "credit_score": 688,
+                "income": 12900,
+                "employment_history": 2,
+                "DTI": 0.5,
+                "RTI": 0.3,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Danny Sullivan",
+                "gender": "female",
+                "credit_score": 720,
+                "income": 6300,
+                "employment_history": 4,
+                "DTI": 0.2,
+                "RTI": 0.5,
+                "has_criminal_background": "True",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Brian Leon",
+                "gender": "male",
+                "credit_score": 663,
+                "income": 14100,
+                "employment_history": 0,
+                "DTI": 0.6,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Amy Frost",
+                "gender": "female",
+                "credit_score": 638,
+                "income": 9100,
+                "employment_history": 3,
+                "DTI": 0,
+                "RTI": 0.45,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Katelyn Washington",
+                "gender": "female",
+                "credit_score": 748,
+                "income": 5900,
+                "employment_history": 3,
+                "DTI": 0.2,
+                "RTI": 0.35,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Jennifer Johnson",
+                "gender": "male",
+                "credit_score": 662,
+                "income": 7500,
+                "employment_history": 3,
+                "DTI": 0.4,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Deborah Long",
+                "gender": "female",
+                "credit_score": 623,
+                "income": 6100,
+                "employment_history": 2,
+                "DTI": 0.3,
+                "RTI": 0.3,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "William Thomas",
+                "gender": "female",
+                "credit_score": 716,
+                "income": 14800,
+                "employment_history": 1,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Michael Castillo",
+                "gender": "male",
+                "credit_score": 636,
+                "income": 7400,
+                "employment_history": 0,
+                "DTI": 0.6,
+                "RTI": 0.45,
+                "has_criminal_background": "True",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Marie Lopez",
+                "gender": "male",
+                "credit_score": 622,
+                "income": 10900,
+                "employment_history": 1,
+                "DTI": 0.2,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Christopher Stone",
+                "gender": "female",
+                "credit_score": 842,
+                "income": 9500,
+                "employment_history": 4,
+                "DTI": 0.2,
+                "RTI": 0.25,
+                "has_criminal_background": "True",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Natasha Anderson",
+                "gender": "male",
+                "credit_score": 703,
+                "income": 12600,
+                "employment_history": 2,
+                "DTI": 0.4,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Sara Jones",
+                "gender": "female",
+                "credit_score": 690,
+                "income": 13800,
+                "employment_history": 4,
+                "DTI": 0.5,
+                "RTI": 0.1,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Charles Thomas",
+                "gender": "male",
+                "credit_score": 842,
+                "income": 3000,
+                "employment_history": 0,
+                "DTI": 0.2,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Jordan Cruz",
+                "gender": "female",
+                "credit_score": 689,
+                "income": 10600,
+                "employment_history": 1,
+                "DTI": 0.4,
+                "RTI": 0.15,
+                "has_criminal_background": "True",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "James Bradley",
+                "gender": "female",
+                "credit_score": 842,
+                "income": 9000,
+                "employment_history": 4,
+                "DTI": 0.2,
+                "RTI": 0.55,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Matthew Davis",
+                "gender": "male",
+                "credit_score": 768,
+                "income": 13800,
+                "employment_history": 3,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Jessica White",
+                "gender": "male",
+                "credit_score": 783,
+                "income": 5100,
+                "employment_history": 2,
+                "DTI": 0.4,
+                "RTI": 0.2,
+                "has_criminal_background": "True",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Lee Oneill",
+                "gender": "female",
+                "credit_score": 705,
+                "income": 12300,
+                "employment_history": 3,
+                "DTI": 0.5,
+                "RTI": 0.1,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Loretta Martin",
+                "gender": "male",
+                "credit_score": 605,
+                "income": 7300,
+                "employment_history": 2,
+                "DTI": 0.5,
+                "RTI": 0.1,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Ryan Silva",
+                "gender": "female",
+                "credit_score": 626,
+                "income": 10200,
+                "employment_history": 4,
+                "DTI": 0.6,
+                "RTI": 0.35,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Joanne Johnson",
+                "gender": "male",
+                "credit_score": 770,
+                "income": 10200,
+                "employment_history": 4,
+                "DTI": 0.6,
+                "RTI": 0.35,
+                "has_criminal_background": "True",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Cameron Ford",
+                "gender": "male",
+                "credit_score": 751,
+                "income": 4700,
+                "employment_history": 0,
+                "DTI": 0.5,
+                "RTI": 0.45,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Diana Williams",
+                "gender": "male",
+                "credit_score": 824,
+                "income": 7600,
+                "employment_history": 4,
+                "DTI": 0,
+                "RTI": 0.2,
+                "has_criminal_background": "True",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Erica Taylor",
+                "gender": "female",
+                "credit_score": 615,
+                "income": 6900,
+                "employment_history": 1,
+                "DTI": 0.5,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Lauren Obrien",
+                "gender": "male",
+                "credit_score": 616,
+                "income": 7400,
+                "employment_history": 0,
+                "DTI": 0.4,
+                "RTI": 0.25,
+                "has_criminal_background": "False",
+                "has_references": 1,
+                "has_free_form_notes": "False",
+                "has_rental_history": "False"
+            },
+            {
+                "name": "Sherry Morales",
+                "gender": "male",
+                "credit_score": 765,
+                "income": 5300,
+                "employment_history": 2,
+                "DTI": 0,
+                "RTI": 0.4,
+                "has_criminal_background": "False",
+                "has_references": 3,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            },
+            {
+                "name": "Richard Tyler",
+                "gender": "female",
+                "credit_score": 739,
+                "income": 6700,
+                "employment_history": 3,
+                "DTI": 0.5,
+                "RTI": 0.15,
+                "has_criminal_background": "False",
+                "has_references": 2,
+                "has_free_form_notes": "True",
+                "has_rental_history": "True"
+            }
+        ]
+        
+        const suggestions = {
+            credit_score: "Credit score can show good income but can't guarantee renter behavior. Please check other fields such as criminal background and rental history as well.",
+            income: "High income is a positive sign, but it's also important to consider stability and employment history to ensure long-term reliability.",
+            employment_history: "A stable employment history indicates reliability. Also consider income and credit score for a comprehensive understanding.",
+            DTI: "A low Debt-to-Income ratio is ideal. However, consider credit score and rental history for a fuller picture of financial responsibility.",
+            RTI: "Rent-to-Income ratio gives insight into affordability. Balance this with credit score and employment history for risk assessment.",
+            has_criminal_background: "A criminal background check is crucial for safety. Also, consider rental history and credit score for comprehensive risk management.",
+            has_references: "References provide real-life testimonials. Pair this with a review of rental history and criminal background for trustworthiness.",
+            has_free_form_notes: "Notes offer unique insights but require careful interpretation. Complement this with factual checks like credit score and criminal background.",
+            has_rental_history: "Rental history is a direct indicator of tenancy behavior. Cross-reference with credit score and employment history for reliability.",
+        };
+
+        function calculateMatching(renter, preference) {
+            switch(preference) {
+                case 'credit_score': return renter.credit_score / 850;
+                case 'income': return renter.income / 15000;
+                case 'employment_history': return renter.employment_history / 4;
+                case 'DTI': return (-(renter.DTI-0.6))/ 0.6;
+                case 'RTI': return renter.RTI / 0.6;
+                case 'has_criminal_background': return renter.has_criminal_background == "True" ? 1 : 0.5;
+                case 'has_references': return renter.has_references / 3;
+                case 'has_free_form_notes': return renter.has_free_form_notes == "True" ? 1 : 0.5;
+                case 'has_rental_history': return renter.has_rental_history == "True" ? 1 : 0.5;
+                default: return 0;
+            }
+        }
+
+        function checkForDuplicatePreferences() {
+            const pref1 = document.getElementById('preference1').value;
+            const pref2 = document.getElementById('preference2').value;
+            const pref3 = document.getElementById('preference3').value;
+
+            if (new Set([pref1, pref2, pref3]).size !== 3) {
+                return true;
+            }
+            return false;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            document.getElementById('preferenceError').style.display = 'none';
+
+            if (checkForDuplicatePreferences()) {
+                document.getElementById('preferenceError').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('suggestionDiv').style.display = 'none';
+            document.getElementById('summaryTable').style.display = 'none'; 
+
+            const preference1 = document.getElementById('preference1').value;
+            const preference2 = document.getElementById('preference2').value;
+            const preference3 = document.getElementById('preference3').value;
+
+            setTimeout(() => {
+                // Hide loading indicator and show results after fake loading time
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                populateSummary(preference1, preference2, preference3);
+
+                document.getElementById('summaryTable').style.display = 'table'; 
+
+                const aiSuggestionText = suggestions[preference1];
+                document.getElementById('aiSuggestion').textContent = aiSuggestionText;
+                document.getElementById('suggestionDiv').style.display = 'block';
+            }, 500);
+        }
+
+        let currentRadarChart = null
+
+        function displayRadarChart(renters) {
+            if (currentRadarChart) {
+                currentRadarChart.destroy(); // Destroy the existing chart if it exists
+            }
+
+            const data = {
+                labels: [
+                    'Credit Score',
+                    'Income ($)',
+                    'Employment History (years)',
+                    'DTI',
+                    'RTI',
+                    'Criminal Background',
+                    'Number of References',
+                    'Free Form Notes',
+                    'Rental History'
+                ],
+                datasets: renters.map(renter => ({
+                    label: renter.name.split(' ').map(part => part[0]).join('').toUpperCase(),
+                    data: [
+                        (renter.credit_score-400) / 450,
+                        renter.income / 15000,
+                        renter.employment_history / 4,
+                        (-(renter.DTI-0.6)) / 0.6,
+                        renter.RTI / 0.6,
+                        renter.has_criminal_background == "True" ? 0.5 : 1,
+                        renter.has_references / 3,
+                        renter.has_free_form_notes == "True" ? 1 : 0,
+                        renter.has_rental_history == "True" ? 1 : 0.5
+                    ],
+                    fill: true,
+                    backgroundColor: `rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.2)`,
+                    borderColor: `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`,
+                    pointBackgroundColor: `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`
+                }))
+            };
+
+            const options = {
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 1,
+                        ticks: {
+                            display: false // Hide scale ticks
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `Top 3 renters comparison`,
+                        font: {
+                            size: 18
+                        },
+                    }
+                },
+            };
+
+            currentRadarChart = new Chart(document.getElementById('renterRadarChart'), {
+                type: 'radar',
+                data: data,
+                options: options
+            });
+        }
+
+        
+        
+        function populateSummary(preference1, preference2, preference3) {
+            const summaryTableBody = document.getElementById('summaryTableBody');
+            summaryTableBody.innerHTML = ''; // Clear existing rows
+
+            const minCreditScore = document.getElementById('minCreditScore').value;
+            const minIncome = document.getElementById('minIncome').value;
+
+            let rentersWithMatch = rentersData.map(renter => {
+                const score1 = calculateMatching(renter, preference1)
+                const score2 = calculateMatching(renter, preference2)
+                const score3 = calculateMatching(renter, preference3)
+                const sum_score = (score1*3+score2*2+score3*1)/6*100
+                return {
+                    ...renter,
+                    matchingPercent: sum_score
+                };
+            });
+
+            if( preference1 === 'credit_score' || preference2 === 'credit_score' || preference3 === 'credit_score' ){
+                rentersWithMatch = rentersWithMatch.filter(renter => 
+                    renter.credit_score >= minCreditScore
+                );
+            }
+
+            if( preference1 === 'income' || preference2 === 'income' || preference3 === 'income' ){
+                rentersWithMatch = rentersWithMatch.filter(renter => 
+                    renter.income >= minIncome
+                );
+            }
+
+            rentersWithMatch.sort((a, b) => b.matchingPercent - a.matchingPercent);
+
+            const topTenRenters = rentersWithMatch.slice(0,10);
+
+            topTenRenters.forEach(renter => {
+                const initials = renter.name.split(' ').map(part => part[0]).join('').toUpperCase();
+    
+                const row = `<tr>
+                    <td>${initials}</td>
+                    <td>${renter.matchingPercent.toFixed(2)}%</td>
+                    <td>${renter.credit_score}</td>
+                    <td>${renter.income}</td>
+                    <td>${renter.employment_history}</td>
+                    <td>${renter.DTI}</td>
+                    <td>${renter.RTI}</td>
+                    <td>${renter.has_criminal_background == "True" ? "Yes" : "No"}</td>
+                    <td>${renter.has_references}</td>
+                    <td>${renter.has_free_form_notes == "True" ? "Yes" : "No"}</td>
+                    <td>${renter.has_rental_history == "True" ? "Yes" : "No"}</td>
+                </tr>`;
+                summaryTableBody.innerHTML += row;
+            });
+
+            const topThreeRenters = topTenRenters.slice(0,3);
+            displayRadarChart(topThreeRenters)
+        }
+    </script>
+</head>
+<body>
+    <h1>Analyze with AI</h1>
+    <h2>Select criteria in order of importance</h2>
+    <form id="preferencesForm" action="#">
+        <div>
+            <label for="preference1">Criteria 1:</label>
+            <select style="width: 200px;" id="preference1" name="preference1">
+                <option value="credit_score" selected>Credit Score</option>
+                <option value="income">Income</option>
+                <option value="employment_history">Employment History</option>
+                <option value="DTI">Debt-to-Income Ratio (DTI)</option>
+                <option value="RTI">Rent-to-Income Ratio (RTI)</option>
+                <option value="has_criminal_background">Criminal Background</option>
+                <option value="has_references">References</option>
+                <option value="has_free_form_notes">Free Form Notes</option>
+                <option value="has_rental_history">Rental History</option>
+            </select>
+        </div>
+        <div>
+            <label for="preference2">Criteria 2:</label>
+            <select style="width: 200px;" id="preference2" name="preference2">
+                <option value="credit_score">Credit Score</option>
+                <option value="income" selected>Income</option>
+                <option value="employment_history">Employment History</option>
+                <option value="DTI">Debt-to-Income Ration (DTI)</option>
+                <option value="RTI">Rent-to-Income Ratio (RTI)</option>
+                <option value="has_criminal_background">Criminal Background</option>
+                <option value="has_references">References</option>
+                <option value="has_free_form_notes">Free Form Notes</option>
+                <option value="has_rental_history">Rental History</option>
+            </select>
+        </div>
+        <div>
+            <label for="preference3">Criteria 3:</label>
+            <select style="width: 200px;" id="preference3" name="preference3">
+                <option value="credit_score">Credit Score</option>
+                <option value="income">Income</option>
+                <option value="employment_history" selected>Employment History</option>
+                <option value="DTI">Debt-to-Income Ration (DTI)</option>
+                <option value="RTI">Rent-to-Income Ratio (RTI)</option>
+                <option value="has_criminal_background">Criminal Background</option>
+                <option value="has_references">References</option>
+                <option value="has_free_form_notes">Free Form Notes</option>
+                <option value="has_rental_history">Rental History</option>
+            </select>
+        </div>
+
+        <!-- Credit Score Filter Slider -->
+        <div id="creditScoreFilter" style="margin-top: 10px;">
+            <label  for="minCreditScore">Minimum Credit Score: </label>
+            <input type="range" id="minCreditScore" name="minCreditScore" min="300" max="850" value="600">
+            <span id="minCreditScoreValue">600</span>
+        </div>
+        
+        <!-- Income Filter Slider -->
+        <div id="incomeFilter"  style="margin-top: 10px;">
+            <label for="minIncome">Minimum Income ($): </label>
+            <input type="range" id="minIncome" name="minIncome" min="0" max="15000" value="1000" step="500">
+            <span id="minIncomeValue">1000</span>
+        </div>
+        <button style="margin-top: 20px;" type="submit">Submit</button>
+        <div id="preferenceError" style="margin-top: 5px; color: red; display: none;">Error: Duplicate criteria selected. Please select different options for each criteria.</div>
+    </form>
+    
+    <h2>Applicant Ranking Summary</h2>
+    <div id="loadingIndicator" style="display: none;">
+        <div class="loader"></div>
+    </div>
+    
+    <table id="summaryTable" border="1" style="text-align: center; display: none;">
+        <tr>
+            <th style="padding: 5px;">Name</th>
+            <th style="padding: 5px;">Matching (%)</th>
+            <th style="padding: 5px;">Credit Score</th>
+            <th style="padding: 5px;">Income ($)</th>
+            <th style="padding: 5px;">Employment<br/>History (years)</th>
+            <th style="padding: 5px;">DTI</th>
+            <th style="padding: 5px;">RTI</th>
+            <th style="padding: 5px;">Criminal<br/>Background</th>
+            <th style="padding: 5px;">Number of<br/>References</th>
+            <th style="padding: 5px;">Free Form<br/> Notes</th>
+            <th style="padding: 5px;">Rental<br/> History</th>
+        </tr>
+        <tbody id="summaryTableBody">
+        </tbody>
+    </table>
+
+    <div id="suggestionDiv" style="margin-top: 20px;">
+        AI suggestion: <span id="aiSuggestion"></span>
+    </div>
+
+    <h2>Key Strength</h2>
+    <div style="height: 600px; width: 600px;">
+        <canvas id="renterRadarChart"></canvas>
+    </div>
+
+    <script>
+        document.getElementById('preferencesForm').addEventListener('submit', handleSubmit);
+        // Show/hide sliders based on preference selection
+        function updateSliderVisibility() {
+            const pref1 = document.getElementById('preference1').value;
+            const pref2 = document.getElementById('preference2').value;
+            const pref3 = document.getElementById('preference3').value;
+
+            document.getElementById('creditScoreFilter').style.display = (pref1 === 'credit_score' || pref2 === 'credit_score' || pref3 === 'credit_score') ? 'block' : 'none';
+            document.getElementById('incomeFilter').style.display = (pref1 === 'income' || pref2 === 'income' || pref3 === 'income') ? 'block' : 'none';
+        }
+
+        document.getElementById('preference1').onchange = updateSliderVisibility;
+        document.getElementById('preference2').onchange = updateSliderVisibility;
+        document.getElementById('preference3').onchange = updateSliderVisibility;
+
+        // Initial call to set correct visibility on page load
+        updateSliderVisibility();
+
+        // Slider value display update
+        document.getElementById('minCreditScore').oninput = function() {
+            document.getElementById('minCreditScoreValue').textContent = this.value;
+        }
+
+        document.getElementById('minIncome').oninput = function() {
+            document.getElementById('minIncomeValue').textContent = this.value;
+        }
+
+    </script>
+</body>
+</html>
